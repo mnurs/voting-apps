@@ -10,6 +10,7 @@ use App\Mail\PilketumDptMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class DptController extends Controller
 {
@@ -91,8 +92,12 @@ class DptController extends Controller
         ];
 
         if ($saved) {
-            // kirim email ke voters
-            Mail::to($request->email)->send(new PilketumDptMailer($members));
+            // kirim email ke voters 
+            try { 
+                Mail::to($request->email)->send(new PilketumDptMailer($members));
+             } catch (\Exception $e) {
+                 Log::error($e->getMessage()); 
+             } 
             return redirect()->route('dpt_success');
         } else {
             App::abort(500, 'Maaf ada beberapa kesalahan server');
