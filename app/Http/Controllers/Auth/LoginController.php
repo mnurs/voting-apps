@@ -68,6 +68,7 @@ class LoginController extends Controller
             // return redirect()->intended('dashboard');
             $user = Auth::user();
             $user->last_login = date('Y-m-d H:i:s');
+            $user->bag_id = $request->bag_id;
             $user->save();
 
             return redirect('/home');
