@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class VoteController extends Controller
 {
@@ -133,8 +134,14 @@ class VoteController extends Controller
         ], $messages);
 
         // file upload
-        $fileName = 'votephoto_' . auth()->user()->member_id . '_' . time() . '.' . $request->vote_photo->extension();
-        $request->vote_photo->move(public_path('uploads/pilketum/' . $pilketum->id . '/votephoto' . '/'), $fileName);
+        $fileName = "";
+        try { 
+            $fileName = 'votephoto_' . auth()->user()->member_id . '_' . time() . '.' . $request->vote_photo->extension();
+            $request->vote_photo->move(public_path('uploads/pilketum/' . $pilketum->id . '/votephoto' . '/'), $fileName); 
+        } catch (\Exception $e) { 
+             Log::error($e->getMessage()); 
+        }
+        
 
         //generate token
         $refkey = Str::random(10);
@@ -145,6 +152,7 @@ class VoteController extends Controller
             'reference_key' => $refkey,
             'vote' => $candidate_choosen['candidate_number'],
             'vote_at' => Carbon::now(),
+            'bag_id' => $request->bag_id,
         ]);
 
 
@@ -157,7 +165,11 @@ class VoteController extends Controller
 
         if ($updated) {
             // kirim email ke voters
-            Mail::to($request->email)->send(new PilketumVoteMailer($voter, $candidate_choosen, $refkey, $pilketumTitle));
+            try { 
+               Mail::to($request->email)->send(new PilketumVoteMailer($voter, $candidate_choosen, $refkey, $pilketumTitle)); 
+            } catch (\Exception $e) {
+                Log::error($e->getMessage()); 
+            } 
             return redirect()->route('vote_success');
         } else {
             App::abort(500, 'Maaf ada beberapa kesalahan server');
