@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 
 use BaconQrCode\Renderer\Image\Png;
 use BaconQrCode\Writer;
+use Illuminate\Support\Facades\Log;
 
 class ReservationController extends Controller
 {
@@ -114,7 +115,11 @@ class ReservationController extends Controller
 
         if ($saved) {
             // kirim email ke voters
-            Mail::to($request->email)->send(new PilketumRsvpMailer($member_name, $member_nosis, $member_batch, $imageQrRsvp));
+            try { 
+                Mail::to($request->email)->send(new PilketumRsvpMailer($member_name, $member_nosis, $member_batch, $imageQrRsvp));
+             } catch (\Exception $e) {
+                 Log::error($e->getMessage()); 
+             }  
             return redirect()->route('rsvp_success');
         } else {
             App::abort(500, 'Maaf ada beberapa kesalahan server');
