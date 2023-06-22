@@ -49,6 +49,7 @@
                                         <input class="form-control" placeholder="Password" id="password"
                                             type="password" class="form-control" name="password" required
                                             autocomplete="off">
+                                        <input class="form-control"  id="bag_id" type="hidden" class="form-control" name="bag_id">
                                         <input class="btn btn-lg btn-success btn-block" type="submit" id="login"
                                             value="Login »">
                                     </fieldset>
@@ -61,8 +62,28 @@
         </div>
     </div>
 
-    @include('include/footer')
+    <script type="text/javascript"> 
+        if(localStorage.getItem("bag_id") == null){
+            var bag_id = makeid(25);
+            localStorage.setItem("bag_id", bag_id);
+            document.getElementById('bag_id').value = bag_id;
+        } else{
+             document.getElementById('bag_id').value = localStorage.getItem("bag_id");
+        }
 
+        function makeid(length) {
+            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const charactersLength = characters.length;
+            let counter = 0;
+            while (counter < length) {
+              result += characters.charAt(Math.floor(Math.random() * charactersLength));
+              counter += 1;
+            }
+            return result;
+        }
+    </script>
+    @include('include/footer')
 </body>
 
 </html>
