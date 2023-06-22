@@ -122,8 +122,8 @@
                                             benar data pilihan saya
                                         </label>
                                     </div>
-                                </div>
-
+                                </div> 
+                                <input class="form-control"  id="bag_id" type="hidden" class="form-control" name="bag_id">
                                 <div class="form-group btn-cont text-right">
                                     <button id="submit_vote" type="submit" class="btn btn-default">Submit Vote</button>
                                 </div>
@@ -136,6 +136,27 @@
     </div>
 
     @include('include/footer')
+    <script type="text/javascript"> 
+        if(localStorage.getItem("bag_id") == null){
+            var bag_id = makeid(25);
+            localStorage.setItem("bag_id", bag_id);
+            document.getElementById('bag_id').value = bag_id;
+        } else{
+             document.getElementById('bag_id').value = localStorage.getItem("bag_id");
+        }
+
+        function makeid(length) {
+            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const charactersLength = characters.length;
+            let counter = 0;
+            while (counter < length) {
+              result += characters.charAt(Math.floor(Math.random() * charactersLength));
+              counter += 1;
+            }
+            return result;
+        }
+    </script>
 </body>
 
 </html>
