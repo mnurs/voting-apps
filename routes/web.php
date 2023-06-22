@@ -6,6 +6,7 @@ use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\DptController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\LogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,3 +74,7 @@ Route::group(['middleware' => ['auth', 'blockLoginByBrowser', 'revalidate']], fu
 
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });
+
+
+Route::get('logview', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+Route::get('log', [LogController::class, 'log']);
