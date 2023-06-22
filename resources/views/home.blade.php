@@ -42,6 +42,11 @@
                         <a href="{{ route('rsvp') }}" class="btn btn-success">REGISTRASI KEHADIRAN MUNAS</a>
                     </div>
                 @endif
+                @if ($btnMyRsvpPage)
+                    <div>
+                        <a href="{{ route('my_rsvp') }}" class="btn btn-success">Periksa RSVP Munas Anda</a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

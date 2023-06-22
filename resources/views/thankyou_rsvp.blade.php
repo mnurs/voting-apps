@@ -12,9 +12,6 @@
 
                 <p class="text-center">Bukti registrasi Anda telah terkirim melalui email yang didaftarkan</p>
                 <div class="text-center">
-                    <img src="data:image/png;base64,{{ base64_encode($imageQrRsvp) }}" alt="QR Image RSVP" style="width: 120px">
-                </div>
-                <div class="text-center">
                     <a href="{{ route('home') }}" class="link-black">Kembali ke Home</a>
                 </div>
             </div>

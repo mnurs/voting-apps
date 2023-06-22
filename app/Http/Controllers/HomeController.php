@@ -52,6 +52,7 @@ class HomeController extends Controller
             $btnVote = false;
             // $btnRsvp = true; activevate this after fase DPT is end
             $btnDpt = true;
+            $btnMyRsvpPage = false;
 
             $hasRegistDpt = $this->pilketumVoterRepository->checkPilketumVoterHasRegis($users->member_id) ?? null;
             $hasRsvp = DB::table('pilketum_rsvps')->where('is_attend', 'N')->where('member_id', $users->member_id)->first();
@@ -68,6 +69,7 @@ class HomeController extends Controller
                 $btnRsvp = false; // activevate this to true, after fase DPT is end
             } else {
                 $btnRsvp = false;
+                $btnMyRsvpPage = true;
             }
 
             // jika sudah mulai voting
@@ -85,7 +87,7 @@ class HomeController extends Controller
                 $btnDpt = false;
             }
 
-            return view('home', compact('users', 'btnDpt', 'btnVote', 'btnRsvp', 'startPilketum', 'endPilketum', 'hasVote'));
+            return view('home', compact('users', 'btnDpt', 'btnVote', 'btnRsvp', 'startPilketum', 'endPilketum', 'hasVote', 'btnMyRsvpPage'));
         }
 
         return redirect('/')->withSuccess('You are not allowed to access');

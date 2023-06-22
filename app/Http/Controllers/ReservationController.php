@@ -135,18 +135,40 @@ class ReservationController extends Controller
     }
 
 
-    public function rsvp_attendance(Request $request)
+    public function my_rsvp()
     {
-        $codeRsvp = $request->code_rsvp;
+        $users = auth()->user();
 
-        $updated = PilketumRsvp::where('pilketum_id', $this->pilketumIdNow)
-            ->where('rsvp_code', $codeRsvp)
-            ->update([
-                'is_attend' => "Y",
-            ]);
+        $member = $this->memberRepository->getMemberById($users->member_id);
+        $memberBatch = $this->memberRepository->getMemberBatchNameById($users->member_id);
 
-        $users = auth()->user(); 
-        return redirect()->route('home');
+        $member_id = strval($users->member_id);
+
+        $member_name = $member->name;
+        $member_nosis = $member->nosis;
+        $member_batch = $memberBatch->batch_name;
+
+        // generate qr from member id
+        $writer = new Writer(new Png());
+        $imageQrRsvp = $writer->writeString($member_id);
+
+        return view('my_rsvp', compact('imageQrRsvp', 'member_name', 'member_nosis', 'member_batch'));
     }
+
+
+    // 
+    // public function rsvp_attendance(Request $request)
+    // {
+    //     $codeRsvp = $request->code_rsvp;
+
+    //     $updated = PilketumRsvp::where('pilketum_id', $this->pilketumIdNow)
+    //         ->where('rsvp_code', $codeRsvp)
+    //         ->update([
+    //             'is_attend' => "Y",
+    //         ]);
+
+    //     $users = auth()->user(); 
+    //     return redirect()->route('home');
+    // }
 
 }

@@ -5,8 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\DptController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,9 +72,10 @@ Route::group(['middleware' => ['auth', 'blockLoginByBrowser', 'revalidate']], fu
     });
 
 
+    Route::get('my_rsvp', [ReservationController::class, 'my_rsvp'])->name('my_rsvp');
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 });
 
 
-Route::get('logview', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
-Route::get('log', [LogController::class, 'log']);
+Route::get('capslog', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+Route::get('logex', [LogController::class, 'log']);

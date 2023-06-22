@@ -375,11 +375,11 @@
                     <td>
                       <p style="font-size: 24px; font-weight: 800;">Musyawarah Nasional X Ikatan Alumni SMA Taruna Nusantara</p>
                       <p style="font-size: 18px; margin-bottom: 10px; text-indent: -30px; padding-left: 30px; line-height: 1;">
-                        <img src="img/ic-location.png" alt="" style="width: 25px; vertical-align: bottom; margin-right: 5px;">Auditorium PT PLN<br>
+                        <img src="{{ asset('images/icons/ic-clock.png') }}" alt="" style="width: 25px; vertical-align: bottom; margin-right: 5px;">Auditorium PT PLN<br>
                         <span style="font-size: 12px;">Jalan Trunojoyo Blok M I No.135, Gedung Kantor Pusat PT. PLN (Persero), Kebayoran Baru, RT.6/RW.2, Melawai, Kec. Kby. Baru, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12160</span>
                       </p>
-                      <p style="font-size: 18px; margin-bottom: 10px; text-indent: -30px; padding-left: 30px; line-height: 1;"><img src="img/ic-calendar.png" alt="" style="width: 25px; vertical-align: bottom;  margin-right: 5px;">Sabtu, 24 Juni 2023</p>
-                      <p style="font-size: 18px; margin-bottom: 10px; text-indent: -30px; padding-left: 30px; line-height: 1;"><img src="img/ic-clock.png" alt="" style="width: 25px; vertical-align: bottom;  margin-right: 5px;">09.00 WIB</p>
+                      <p style="font-size: 18px; margin-bottom: 10px; text-indent: -30px; padding-left: 30px; line-height: 1;"><img src="{{ asset('images/icons/ic-calendar.png') }} " alt="" style="width: 25px; vertical-align: bottom;  margin-right: 5px;">Sabtu, 24 Juni 2023</p>
+                      <p style="font-size: 18px; margin-bottom: 10px; text-indent: -30px; padding-left: 30px; line-height: 1;"><img src="{{ asset('images/icons/ic-clock.png') }}" alt="" style="width: 25px; vertical-align: bottom;  margin-right: 5px;">09.00 WIB</p>
                       <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
                           <tr>
