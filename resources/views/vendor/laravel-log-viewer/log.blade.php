@@ -207,6 +207,7 @@
         <table id="table-log" class="table table-striped" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">
           <thead>
           <tr>
+            <th>Content</th>
             @if ($standardFormat)
               <th>Level</th>
               <th>Context</th>
@@ -214,20 +215,13 @@
             @else
               <th>Line number</th>
             @endif
-            <th>Content</th>
           </tr>
           </thead>
           <tbody>
 
           @foreach($logs as $key => $log)
             <tr data-display="stack{{{$key}}}">
-              @if ($standardFormat)
-                <td class="nowrap text-{{{$log['level_class']}}}">
-                  <span class="fa fa-{{{$log['level_img']}}}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
-                </td>
-                <td class="text">{{$log['context']}}</td>
-              @endif
-              <td class="date">{{{$log['date']}}}</td>
+              
               <td class="text">
                 @if ($log['stack'])
                   <button type="button"
@@ -246,6 +240,13 @@
                   </div>
                 @endif
               </td>
+              @if ($standardFormat)
+                <td class="nowrap text-{{{$log['level_class']}}}">
+                  <span class="fa fa-{{{$log['level_img']}}}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
+                </td>
+                <td class="text">{{$log['context']}}</td>
+              @endif
+              <td class="date">{{{$log['date']}}}</td>
             </tr>
           @endforeach
 
