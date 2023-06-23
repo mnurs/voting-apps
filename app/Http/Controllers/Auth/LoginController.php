@@ -69,6 +69,7 @@ class LoginController extends Controller
             $user = Auth::user();
             $user->last_login = date('Y-m-d H:i:s');
             $user->bag_id = $request->bag_id;
+            $user->ip_address = $request->ip();
             $user->save();
 
             return redirect('/home');

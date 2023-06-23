@@ -74,7 +74,7 @@ class ReservationController extends Controller
         $request->validate([
             'no_whatsapp' => 'required',
             'email' => 'required',
-            'rsvp_photo' => 'required',
+            'rsvp_photo' => ['required', 'file', 'image'],
         ], $messages);
 
         $fileName = 'rsvp_' . auth()->user()->member_id . '_' . time() . '.'. $request->rsvp_photo->extension();  

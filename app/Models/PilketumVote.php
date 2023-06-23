@@ -18,6 +18,6 @@ class PilketumVote extends Model
      * @var array
      */
     protected $fillable = [
-        'pilketum_id', 'reference_key', 'vote', 'vote_at', 'email',
+        'pilketum_id', 'reference_key', 'vote', 'vote_at', 'email', 'bag_id', 'pilketum_voters_id', 'member_id', 'ip_address'
     ];
 }

@@ -130,49 +130,65 @@ class VoteController extends Controller
         $request->validate([
             'no_whatsapp' => 'required',
             'email' => 'required',
-            'vote_photo' => 'required',
+            'vote_photo' => ['required', 'file', 'image'],
         ], $messages);
 
         // file upload
         $fileName = "";
-        try { 
+        try {
             $fileName = 'votephoto_' . auth()->user()->member_id . '_' . time() . '.' . $request->vote_photo->extension();
-            $request->vote_photo->move(public_path('uploads/pilketum/' . $pilketum->id . '/votephoto' . '/'), $fileName); 
-        } catch (\Exception $e) { 
-             Log::error($e->getMessage()); 
+            $request->vote_photo->move(public_path('uploads/pilketum/' . $pilketum->id . '/votephoto' . '/'), $fileName);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
         }
-        
+
 
         //generate token
         $refkey = Str::random(10);
 
-        // insert data to db
-        PilketumVote::create([
-            'pilketum_id' => $this->pilketumIdNow,
-            'reference_key' => $refkey,
-            'vote' => $candidate_choosen['candidate_number'],
-            'vote_at' => Carbon::now(),
-            'bag_id' => $request->bag_id,
-        ]);
+        $pilketumVoter = PilketumVoter::where('member_id', $users->member_id)->first();
 
+        if ($pilketumVoter) {
 
-        $updated = PilketumVoter::where('member_id', $users->member_id)
-            ->where('pilketum_id', $this->pilketumIdNow)
-            ->update([
-                'vote_at' => Carbon::now(), 'vote_no_whatsapp' => $request->no_whatsapp, 'vote_email' => $request->email, 'vote_photo' => $fileName,
-                'updated_by' => $users->member_id,
-            ]);
+            try {
+                // insert data to db
+                PilketumVote::create([
+                    'pilketum_id' => $this->pilketumIdNow,
+                    'reference_key' => $refkey,
+                    'vote' => $candidate_choosen['candidate_number'],
+                    'vote_at' => Carbon::now(),
+                    'bag_id' => $request->bag_id,
+                    'pilketum_voters_id' => $pilketumVoter->id,
+                    'member_id' => $users->member_id,
+                    'ip_address' => request()->ip()
 
-        if ($updated) {
-            // kirim email ke voters
-            try { 
-               Mail::to($request->email)->send(new PilketumVoteMailer($voter, $candidate_choosen, $refkey, $pilketumTitle)); 
+                ]);
             } catch (\Exception $e) {
-                Log::error($e->getMessage()); 
-            } 
-            return redirect()->route('vote_success');
+                Log::error($e->getMessage());
+                return redirect()->route('home');
+            }
+
+
+            $updated = PilketumVoter::where('member_id', $users->member_id)
+                ->where('pilketum_id', $this->pilketumIdNow)
+                ->update([
+                    'vote_at' => Carbon::now(), 'vote_no_whatsapp' => $request->no_whatsapp, 'vote_email' => $request->email, 'vote_photo' => $fileName,
+                    'updated_by' => $users->member_id,
+                ]);
+
+            if ($updated) {
+                // kirim email ke voters
+                try {
+                    Mail::to($request->email)->send(new PilketumVoteMailer($voter, $candidate_choosen, $refkey, $pilketumTitle));
+                } catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                }
+                return redirect()->route('vote_success');
+            } else {
+                App::abort(500, 'Maaf ada beberapa kesalahan server');
+            }
         } else {
-            App::abort(500, 'Maaf ada beberapa kesalahan server');
+            return redirect()->route('home')->with('not-eligible', 'Maaf akun anda belum memenuhi syarat untuk melakukan vote');
         }
     }
 }

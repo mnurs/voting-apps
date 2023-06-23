@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 
 use App\Models\PilketumRsvp;
+use App\Models\User;
 
 class FirstSubmitRsvpMiddleware
 {
@@ -25,6 +26,6 @@ class FirstSubmitRsvpMiddleware
         }
 
         // Redirect the user or show an error message
-        return redirect()->route('home');
+        return redirect()->route('home')->with('not-eligible', 'Maaf akun anda belum memenuhi syarat untuk melakukan rsvp');
     }
 }

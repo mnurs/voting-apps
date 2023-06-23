@@ -28,6 +28,12 @@
         };
     </script>
 
+    <script>
+        setTimeout(function() {
+            window.location.href = "{{ route('home') }}";
+        }, 2000); // Redirect after 2 seconds (adjust as needed)
+    </script>
+
     @include('include/footer')
 </body>
 

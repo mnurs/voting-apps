@@ -1,3 +1,3 @@
 # README #
 
-Voting apps for ikastara using laravel 10
+Voting apps for ikastara using laravel 8

@@ -68,7 +68,7 @@ class DptController extends Controller
         $request->validate([
             'no_whatsapp' => 'required',
             'email' => 'required',
-            'dpt_photo' => 'required',
+            'dpt_photo' => ['required', 'file', 'image'],
         ], $messages);
 
         $fileName = 'dpt_' . auth()->user()->member_id . '_' . time() . '.'. $request->dpt_photo->extension();  

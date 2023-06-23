@@ -50,9 +50,10 @@ class HomeController extends Controller
             $endPilketum = $pilketums->end_at;
 
             $btnVote = false;
-            // $btnRsvp = true; activevate this after fase DPT is end
+            $btnRsvp = true; //activevate this after fase DPT is end
             $btnDpt = true;
             $btnMyRsvpPage = false;
+            $labelBtnHasVote = false;
 
             $hasRegistDpt = $this->pilketumVoterRepository->checkPilketumVoterHasRegis($users->member_id) ?? null;
             $hasRsvp = DB::table('pilketum_rsvps')->where('is_attend', 'N')->where('member_id', $users->member_id)->first();
@@ -66,7 +67,7 @@ class HomeController extends Controller
             }
 
             if (empty($hasRsvp)) {
-                $btnRsvp = false; // activevate this to true, after fase DPT is end
+                $btnRsvp = true; // activevate this to true, after fase DPT is end
             } else {
                 $btnRsvp = false;
                 $btnMyRsvpPage = true;
@@ -77,9 +78,15 @@ class HomeController extends Controller
                 $btnVote = true;
             }
 
+            // jika sudah mulai voting dan belum regis DPT
+            if ((Carbon::now() >= $startPilketum && Carbon::now() <= $endPilketum) && !$hasRegistDpt) {
+                $btnVote = false;
+            }
+
             //  kalau udah nge vote maka btn vote hilang
             if ($hasVote) {
                 $btnVote = false;
+                $labelBtnHasVote = true;
             }
 
             //  kalau udah abis masa DPT, Hide tombol DPT untuk semua user
@@ -87,7 +94,7 @@ class HomeController extends Controller
                 $btnDpt = false;
             }
 
-            return view('home', compact('users', 'btnDpt', 'btnVote', 'btnRsvp', 'startPilketum', 'endPilketum', 'hasVote', 'btnMyRsvpPage'));
+            return view('home', compact('users', 'btnDpt', 'btnVote', 'btnRsvp', 'startPilketum', 'endPilketum', 'hasVote', 'btnMyRsvpPage', 'labelBtnHasVote'));
         }
 
         return redirect('/')->withSuccess('You are not allowed to access');
