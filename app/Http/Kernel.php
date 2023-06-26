@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'form.submission.dpt' => \App\Http\Middleware\FormSubmissionDptMiddleware::class,
         'first.submit.dpt' => \App\Http\Middleware\FirstSubmitDptMiddleware::class,
         'first.submit.rsvp' => \App\Http\Middleware\FirstSubmitRsvpMiddleware::class,
+        'first.submit.voting' => \App\Http\Middleware\FormSubmissionVotingMiddleware::class,
     ];
 }

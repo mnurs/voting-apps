@@ -53,7 +53,7 @@ Route::group(['middleware' => ['auth', 'blockLoginByBrowser', 'revalidate']], fu
         Route::get('vote_candidate', 'vote_candidate')->name('vote_candidate')->middleware('form.submission.dpt');
         Route::post('vote_candidate_store', 'vote_candidate_store')->name('vote_candidate_store')->middleware('form.submission.dpt');
         Route::get('vote_confirmation', 'vote_confirmation')->name('vote_confirmation')->middleware('form.submission.dpt');
-        Route::post('vote_submit', 'vote_submit')->name('vote_submit')->middleware('form.submission.dpt');
+        Route::post('vote_submit', 'vote_submit')->name('vote_submit')->middleware('first.submit.voting');
 
         Route::get('vote_success', function () {
             return view('thankyou');

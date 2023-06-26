@@ -16,19 +16,19 @@ use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\Log;
 
-class FormSubmissionDptMiddleware
+class FormSubmissionVotingMiddleware
 {
     public function handle(Request $request, Closure $next)
-    {
+    {  
         $memberId = $request->user()->member_id;
         $users = $request->user();
 
         $candidate_choosen = $request->session()->get('voteinfo.candidate_choosen');
-        $userInfoLog = User::where('member_id', $memberId)->first();
+        $userInfoLog = auth()->user();
         $userId = $userInfoLog->id;
-        $bagIdUser = $userInfoLog->bag_id;
-        $ipAddressUser = $userInfoLog->ip_address;
-        $nosisUser = $userInfoLog->member_nosis;
+        $bagIdUser = $request->bag_id;
+        $ipAddressUser = request()->ip();
+        $nosisUser = $request->member_nosis;
         $statusUser = $userInfoLog->status;
 
         $pilketum = Pilketum::latest('id')->first();
@@ -60,6 +60,16 @@ class FormSubmissionDptMiddleware
 
             // Redirect the user or show an error message
             return redirect()->route('home')->with('not-eligible', 'Maaf akun anda belum memenuhi syarat untuk melakukan vote');
+        }
+
+        if(isset($request->vote_photo)){
+            if(filesize($request->vote_photo) < 100000){
+                 $this->createLogs($bagIdUser,$userHasSubmitDpt->id,$users,"ukuran foto kecil",$ipAddressUser,$candidate_choosen);
+                Log::warning("user dengan member_id : {$memberId}, user_id : {$userId}, bag_id : {$bagIdUser}, ip_address : {$ipAddressUser}, nosis: {$nosisUser} tidak memiliki ip");
+
+                // Redirect the user or show an error message
+                return redirect()->route('home')->with('not-eligible', 'File yang anda upload terlalu kecil');
+            }   
         }
 
         if (($userHasSubmitDpt)) {
